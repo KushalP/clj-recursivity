@@ -1,6 +1,0 @@
-(ns recursivity.math-test
-  (:use [recursivity.math])
-  (:use [clojure.test]))
-
-(deftest replace-me ;; FIXME: write
-  (is false "No tests have been written."))
