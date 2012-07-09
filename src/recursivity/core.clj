@@ -39,11 +39,21 @@
    (variance-with-count values (- (count values) 1))
    )))
 
-(defn gaussian [mean std-dev value] 5)
-
-(defn sigmoid [value] 5)
-
 (defn true-range [high low last-close] (- (max-value [high last-close]) (min-value [low last-close])))
+
+(defn gaussian [mean std-dev value]
+    (rationalize (let [first (/ 1 (* std-dev (Math/sqrt (* 2 Math/PI))))
+      second (Math/pow Math/E (/ (* -1 (Math/pow (- mean value) 2)) (* 2 (Math/pow std-dev 2))))]
+      (* first second)))
+  )
+
+(defn sigmoid [value]
+  (rationalize (/ 1.0 (+ 1 (Math/pow 1 (* -1 value)))))
+  )
+
+(defn euclidian-dist [value-pairs] 5)
+;;def euclidianDist(pairs: Seq[(BigDecimal, BigDecimal)]): BigDecimal =
+;;    dec(sqrt(pairs.foldLeft(dec(0))((input, pair) => input + dec(pow(pair._1.doubleValue() - pair._2.doubleValue(), 2))).doubleValue()))
 
 (defn m-bind [function value]
   (if (nil? value)

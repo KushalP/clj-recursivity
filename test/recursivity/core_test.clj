@@ -34,3 +34,12 @@
 (deftest calc-truerange
   (is (= 0.9100000000000037 (true-range 48.7 47.79 48.16)))
   )
+
+(deftest calc-sigmoid
+  (is (= (rationalize 0.5) (sigmoid 0))))
+
+(deftest calc-gaussian
+  (is (= (rationalize 0.03401870545760999) (gaussian 73 6.2 66))))
+
+(deftest calc-euclidian-dist
+  (is (= 20.518284528683193 (euclidian-dist [3 18 104 90]))))
