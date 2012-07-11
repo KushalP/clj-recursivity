@@ -51,7 +51,9 @@
   (rationalize (/ 1.0 (+ 1 (Math/pow 1 (* -1 value)))))
   )
 
-(defn euclidian-dist [value-pairs] 5)
+(defn euclidian-dist [value-pairs] 
+  (Math/sqrt (reduce #(+ %1 (Math/pow (- (nth %2 0) (nth %2 1)) 2)) 0 value-pairs))
+  )
 ;;def euclidianDist(pairs: Seq[(BigDecimal, BigDecimal)]): BigDecimal =
 ;;    dec(sqrt(pairs.foldLeft(dec(0))((input, pair) => input + dec(pow(pair._1.doubleValue() - pair._2.doubleValue(), 2))).doubleValue()))
 
