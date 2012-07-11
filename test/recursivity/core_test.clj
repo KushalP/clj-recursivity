@@ -8,4 +8,8 @@
 
 (expect 3 (get-or-else 3 5))
 (expect 5 (get-or-else nil 5))
+(expect 5 (get-or-else nil #(+ 2 3)))
+
+(expect true (.contains (slurp-classpath "/test.txt") "hello world"))
+(expect true (.contains (slurp-classpath "/test.txt") "bye cruel world"))
 

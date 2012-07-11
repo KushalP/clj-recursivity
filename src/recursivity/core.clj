@@ -1,5 +1,4 @@
-(ns recursivity.core
-  )
+(ns recursivity.core)
 
 (defn m-bind [function value]
   (if (nil? value)
@@ -13,6 +12,10 @@
       default)
     value))
 
-(defn slurp-classpath [path] 5)
+(defn slurp-classpath [path] 
+  (let [in (.getResourceAsStream (class (Object.)) path)]
+    (try (slurp in) (finally (.close in)))
+    )
+  )
 
 (defn read-csv [txt-contents] 5)
