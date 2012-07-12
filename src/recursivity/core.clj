@@ -1,5 +1,4 @@
-(ns recursivity.core
-  (import [clojure.lang Associative Sequential]))
+(ns recursivity.core)
 
 (defn m-bind [function value]
   (if (nil? value)
@@ -22,32 +21,34 @@
   (classpath-resource slurp path)
   )
 
-(defn get-lines 
+
+
+(defmulti get-lines (fn [input & args] (type input)))
+
+(defmethod get-lines String 
   ([text] (get-lines text (System/getProperty "line.separator")))
   ([text separator]
     (seq (.split text separator)))
   )
 
+(defmethod get-lines java.io.InputStream 
+  ([in] (get-lines in (System/getProperty "line.separator")))
+  ([in separator]
+    (try (get-lines (slurp in)) (finally (.close in)))
+  ))
 
-(defn read-csv 
-  ([input] (read-csv input ","))
+
+(defmulti csv (fn [input & args] (type input)))
+(defmethod csv clojure.lang.Sequential 
+  ([input] (csv input ","))
   ([input separator] (map #(.split %1 separator) input))
   )
-
-
-(defmulti csv type)
-(defmethod csv Sequential ([input] (read-csv input ","))
-  ([input separator] (read-csv input separator))
+(defmethod csv String ([input] (csv input ","))
+  ([input separator] (csv (get-lines input) separator))
   )
-(defmethod csv String ([input] (read-csv (get-lines input) ","))
-  ([input separator] (read-csv (get-lines input) separator))
+(defmethod csv java.io.InputStream ([input] (csv input ","))
+  ([input separator] (csv (slurp input) separator))
   )
-(defmethod csv java.io.InputStream ([input] (read-csv (get-lines (slurp input)) ","))
-  ([input separator] (read-csv (get-lines (slurp input)) separator))
-  )
-
-
-;(defmethod foo String [s] :a-string)
 
 
 

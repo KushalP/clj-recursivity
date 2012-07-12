@@ -14,10 +14,11 @@
 (expect true (.contains (slurp-classpath "/test.txt") "bye cruel world"))
 
 (expect 2 (count (get-lines (slurp-classpath "/test.txt"))))
+(expect 2 (count (get-lines (.getResourceAsStream (class (Object.)) "/test.txt"))))
 
-(expect 14 (count (read-csv (get-lines (slurp-classpath "/tennis.csv")))))
+(expect 14 (count (csv (get-lines (slurp-classpath "/tennis.csv")))))
 
-(expect 5 (count (nth (read-csv (get-lines (slurp-classpath "/tennis.csv"))) 0)))
+(expect 5 (count (nth (csv (get-lines (slurp-classpath "/tennis.csv"))) 0)))
 
 (expect "high" (nth (nth (csv (get-lines (slurp-classpath "/tennis.csv"))) 4) 2))
 
