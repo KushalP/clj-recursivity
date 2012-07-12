@@ -13,3 +13,15 @@
 (expect true (.contains (slurp-classpath "/test.txt") "hello world"))
 (expect true (.contains (slurp-classpath "/test.txt") "bye cruel world"))
 
+(expect 2 (count (get-lines (slurp-classpath "/test.txt"))))
+
+(expect 14 (count (read-csv (get-lines (slurp-classpath "/tennis.csv")))))
+
+(expect 5 (count (nth (read-csv (get-lines (slurp-classpath "/tennis.csv"))) 0)))
+
+(expect "high" (nth (nth (csv (get-lines (slurp-classpath "/tennis.csv"))) 4) 2))
+
+(expect "high" (nth (nth (classpath-resource csv "/tennis.csv") 4) 2))
+
+(expect "high" (nth (nth (csv (slurp-classpath "/tennis.csv")) 4) 2))
+
