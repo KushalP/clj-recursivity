@@ -22,6 +22,12 @@
   )
 
 
+(defn get-value [input]
+  (if 
+    (instance? clojure.lang.Symbol (read-string input))
+      input
+      (read-string input)
+      ))
 
 (defmulti get-lines (fn [input & args] (type input)))
 
@@ -49,6 +55,8 @@
 (defmethod csv java.io.InputStream ([input] (csv input ","))
   ([input separator] (csv (slurp input) separator))
   )
+
+;; properties?
 
 
 

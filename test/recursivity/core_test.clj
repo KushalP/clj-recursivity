@@ -26,3 +26,6 @@
 
 (expect "high" (nth (nth (csv (slurp-classpath "/tennis.csv")) 4) 2))
 
+(expect "hello" (get-value "hello"))
+
+(expect 5 (get-value "5"))
