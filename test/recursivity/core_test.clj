@@ -26,6 +26,21 @@
 
 (expect "high" (nth (nth (csv (slurp-classpath "/tennis.csv")) 4) 2))
 
+(expect "male" (nth (nth (classpath-resource csv "/numerical-bayes.csv") 0) 0))
+
+(expect 6 (nth (nth (classpath-resource csv "/numerical-bayes.csv") 0) 1))
+
 (expect "hello" (get-value "hello"))
 
 (expect 5 (get-value "5"))
+
+(def props (properties (slurp-classpath "/test.properties")))
+(def inprops (classpath-resource properties "/test.properties"))
+
+(expect "world" (:hello props))
+(expect "www.google.com" (:some.host props))
+(expect 80 (:port props))
+
+(expect "world" (:hello inprops))
+(expect "www.google.com" (:some.host inprops))
+(expect 80 (:port inprops))

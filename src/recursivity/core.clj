@@ -44,10 +44,23 @@
   ))
 
 
+(defmulti properties (fn [input ] (type input)))
+
+(defmethod properties String [contents]
+  (reduce 
+    #(assoc %1 (keyword (nth (.split %2 "=") 0)) (get-value (nth (.split %2 "=") 1)))
+     {} (get-lines contents))
+  )
+
+(defmethod properties java.io.InputStream [input] 
+  (properties (slurp input))
+  )
+
+
 (defmulti csv (fn [input & args] (type input)))
 (defmethod csv clojure.lang.Sequential 
   ([input] (csv input ","))
-  ([input separator] (map #(.split %1 separator) input))
+  ([input separator] (map (fn [line] (map #(get-value %1) (.split line separator))) input))
   )
 (defmethod csv String ([input] (csv input ","))
   ([input separator] (csv (get-lines input) separator))
@@ -55,8 +68,6 @@
 (defmethod csv java.io.InputStream ([input] (csv input ","))
   ([input separator] (csv (slurp input) separator))
   )
-
-;; properties?
 
 
 
