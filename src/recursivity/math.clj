@@ -14,10 +14,10 @@
 
 (defn median [values]
   (let [sorted (sort < values)]
-    (if (= 0 (rem (count sorted) 2))
-      (/ (+ (nth sorted (/ (- (count sorted) 1) 2))
-            (nth sorted (/ (+ (count sorted) 1) 2))) 2)
-      (nth sorted (/ (- (count sorted) 1) 2)))))
+    (if (zero? (rem (count sorted) 2))
+      (/ (+ (nth sorted (/ (dec (count sorted)) 2))
+            (nth sorted (/ (inc (count sorted)) 2))) 2)
+      (nth sorted (/ (dec (count sorted)) 2)))))
 
 (defn max-value [values]
   (reduce #(if (> %1 %2) %1 %2) values))
@@ -43,7 +43,7 @@
 
 (defn sample-std-dev [values]
   (rationalize (sqrt
-   (variance-with-count values (- (count values) 1)))))
+   (variance-with-count values (dec (count values))))))
 
 (defn true-range [high low last-close]
   (- (max-value [high last-close]) (min-value [low last-close])))
@@ -54,7 +54,8 @@
       (* first second))))
 
 (defn sigmoid [value]
-  (rationalize (/ 1.0 (+ 1 (pow 1 (* -1 value))))))
+  (rationalize (/ 1.0
+                  (inc (pow 1 (* -1 value))))))
 
 (defn euclidian-dist [value-pairs]
   (sqrt (reduce #(+ %1 (pow (- (nth %2 0) (nth %2 1)) 2)) 0 value-pairs)))
