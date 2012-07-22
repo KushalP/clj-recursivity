@@ -6,7 +6,7 @@
 (def e Math/E)
 
 (defn mean [values]
-  (/ (reduce #(+ %1 %2) values)
+  (/ (reduce + values)
      (count values)))
 
 (defn avg [values]
