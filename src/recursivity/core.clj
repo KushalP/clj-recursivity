@@ -1,8 +1,7 @@
 (ns recursivity.core)
 
 (defn m-bind [function value]
-  (if (nil? value)
-    nil
+  (when-not (nil? value)
     (function value)))
 
 (defn get-or-else [value default]
