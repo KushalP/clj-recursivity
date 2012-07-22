@@ -54,7 +54,7 @@
 
 (defmethod csv clojure.lang.Sequential
   ([input] (csv input ","))
-  ([input separator] (map (fn [line] (map #(get-value %1) (.split line separator))) input)))
+  ([input separator] (map (fn [line] (map get-value (.split line separator))) input)))
 
 (defmethod csv String ([input] (csv input ","))
   ([input separator] (csv (get-lines input) separator)))
