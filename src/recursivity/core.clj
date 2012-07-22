@@ -14,60 +14,49 @@
 
 (defn classpath-resource [func path]
   (let [in (.getResourceAsStream (class (Object.)) path)]
-    (try (func in) (finally (.close in)))
-    ))
+    (try (func in) (finally (.close in)))))
 
-(defn slurp-classpath [path] 
-  (classpath-resource slurp path)
-  )
-
+(defn slurp-classpath [path]
+  (classpath-resource slurp path))
 
 (defn get-value [input]
-  (if 
+  (if
     (instance? clojure.lang.Symbol (read-string input))
       input
-      (read-string input)
-      ))
+      (read-string input)))
 
 (defmulti get-lines (fn [input & args] (type input)))
 
-(defmethod get-lines String 
+(defmethod get-lines String
   ([text] (get-lines text (System/getProperty "line.separator")))
   ([text separator]
-    (seq (.split text separator)))
-  )
+    (seq (.split text separator))))
 
-(defmethod get-lines java.io.InputStream 
+(defmethod get-lines java.io.InputStream
   ([in] (get-lines in (System/getProperty "line.separator")))
   ([in separator]
-    (try (get-lines (slurp in)) (finally (.close in)))
-  ))
+    (try (get-lines (slurp in)) (finally (.close in)))))
 
 
 (defmulti properties (fn [input ] (type input)))
 
 (defmethod properties String [contents]
-  (reduce 
+  (reduce
     #(assoc %1 (keyword (nth (.split %2 "=") 0)) (get-value (nth (.split %2 "=") 1)))
-     {} (get-lines contents))
-  )
+     {} (get-lines contents)))
 
-(defmethod properties java.io.InputStream [input] 
-  (properties (slurp input))
-  )
+(defmethod properties java.io.InputStream [input]
+  (properties (slurp input)))
 
 
 (defmulti csv (fn [input & args] (type input)))
-(defmethod csv clojure.lang.Sequential 
+
+(defmethod csv clojure.lang.Sequential
   ([input] (csv input ","))
-  ([input separator] (map (fn [line] (map #(get-value %1) (.split line separator))) input))
-  )
+  ([input separator] (map (fn [line] (map #(get-value %1) (.split line separator))) input)))
+
 (defmethod csv String ([input] (csv input ","))
-  ([input separator] (csv (get-lines input) separator))
-  )
+  ([input separator] (csv (get-lines input) separator)))
+
 (defmethod csv java.io.InputStream ([input] (csv input ","))
-  ([input separator] (csv (slurp input) separator))
-  )
-
-
-
+  ([input separator] (csv (slurp input) separator)))
