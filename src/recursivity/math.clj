@@ -20,7 +20,7 @@
       (nth sorted (/ (dec (count sorted)) 2)))))
 
 (defn max-value [values]
-  (reduce #(if (> %1 %2) %1 %2) values))
+  (first (sort > values)))
 
 (defn min-value [values]
   (reduce #(if (< %1 %2) %1 %2) values))
