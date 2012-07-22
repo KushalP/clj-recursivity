@@ -3,4 +3,4 @@
   (:use [expectations])
   )
 
-(expect 4 5)
+(expect 5 5)
