@@ -20,7 +20,7 @@
 
 (defn get-value [input]
   (if
-    (instance? clojure.lang.Symbol (read-string input))
+    (symbol? (read-string input))
       input
       (read-string input)))
 
