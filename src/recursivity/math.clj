@@ -23,7 +23,7 @@
   (first (sort > values)))
 
 (defn min-value [values]
-  (reduce #(if (< %1 %2) %1 %2) values))
+  (first (sort values)))
 
 (defn variance-with-count [values count]
   (let [average (avg values)]
@@ -46,16 +46,22 @@
    (variance-with-count values (dec (count values))))))
 
 (defn true-range [high low last-close]
-  (- (max-value [high last-close]) (min-value [low last-close])))
+  (- (max-value [high last-close])
+     (min-value [low last-close])))
 
 (defn gaussian [mean std-dev value]
-    (rationalize (let [first (/ 1 (* std-dev (sqrt (* 2 pi))))
-      second (pow e (/ (* -1 (pow (- mean value) 2)) (* 2 (pow std-dev 2))))]
-      (* first second))))
+  (rationalize (let [first (->> (sqrt (* 2 pi))
+                                (* std-dev)
+                                (/ 1))
+                     second (pow e (/ (* -1 (pow (- mean value) 2))
+                                      (* 2 (pow std-dev 2))))]
+                 (* first second))))
 
 (defn sigmoid [value]
-  (rationalize (/ 1.0
-                  (inc (pow 1 (* -1 value))))))
+  (rationalize (->> (* -1 value)
+                    (pow 1)
+                    (inc)
+                    (/ 1.0))))
 
 (defn euclidian-dist [value-pairs]
   (sqrt (reduce #(+ %1 (pow (- (nth %2 0) (nth %2 1)) 2)) 0 value-pairs)))
